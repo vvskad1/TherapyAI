@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Therapy AI Demo - Admin Dashboard</title>
+    <!-- Admin dashboard for managing therapists -->
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Sidebar -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar" 
+         aria-labelledby="mobileSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileSidebarLabel">
+                <i class="bi bi-heart-pulse me-2 text-primary"></i>
+                Therapy AI
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" 
+                    aria-label="Close sidebar"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="sidebar-content">
+                <!-- Sidebar content will be populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop sidebar -->
+    <div class="sidebar d-none d-lg-block">
+        <div class="sidebar-header">
+            <h5 class="mb-0">
+                <i class="bi bi-heart-pulse me-2 text-primary"></i>
+                Therapy AI
+            </h5>
+        </div>
+        <div class="sidebar-content">
+            <!-- Sidebar content will be populated by JS -->
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <!-- Top navbar -->
+        <nav class="navbar navbar-light bg-white border-bottom">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary d-lg-none" type="button" 
+                        data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar"
+                        aria-controls="mobileSidebar" aria-label="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h1 class="h4 mb-0">Therapist Management</h1>
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="currentUserName">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page content -->
+        <div class="container-fluid p-4">
+            <div class="row mb-4">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                            data-bs-target="#addTherapistModal" aria-label="Add new therapist">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add Therapist
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Assigned Clients</th>
+                                            <th>Date Added</th>
+                                            <th width="120" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="therapistsTable">
+                                        <!-- Table rows will be populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Therapist Modal -->
+    <div class="modal fade" id="addTherapistModal" tabindex="-1" 
+         aria-labelledby="addTherapistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTherapistModalLabel">Add New Therapist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTherapistForm" novalidate>
+                        <div class="mb-3">
+                            <label for="therapistName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="therapistName" name="therapistName" required>
+                            <div class="invalid-feedback">
+                                Please provide a name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="therapistEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="therapistEmail" name="therapistEmail" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="therapistPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="therapistPassword" name="therapistPassword"
+                                   required minlength="6">
+                            <div class="invalid-feedback">
+                                Password must be at least 6 characters.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" form="addTherapistForm" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add Therapist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Therapist Modal -->
+    <div class="modal fade" id="editTherapistModal" tabindex="-1" 
+         aria-labelledby="editTherapistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTherapistModalLabel">Edit Therapist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTherapistForm" novalidate>
+                        <input type="hidden" id="editTherapistId" name="editTherapistId">
+                        <div class="mb-3">
+                            <label for="editTherapistName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editTherapistName" name="editTherapistName" required>
+                            <div class="invalid-feedback">
+                                Please provide a name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTherapistEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editTherapistEmail" name="editTherapistEmail" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-warning" id="resetPasswordBtn">
+                                <i class="bi bi-key me-2"></i>
+                                Reset Password
+                            </button>
+                            <small class="form-text text-muted">
+                                Generate a new random password for this therapist
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" form="editTherapistForm" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Update Therapist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer">
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- App modules -->
+    <script type="module" src="assets/js/storage.js"></script>
+    <script type="module" src="assets/js/ui.js?v=1.1"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>
